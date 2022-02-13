@@ -46,4 +46,4 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
   }
 }
 
-module.exports = { GeneratorTypescript };
+module.exports = GeneratorTypescript;
