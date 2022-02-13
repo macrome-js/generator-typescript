@@ -36,11 +36,11 @@
     "@babel/core": "^7.17.2",
     "@babel/preset-typescript": "^7.16.7",
     "@iter-tools/queue": "^1.5.2",
+    "@macrome/generator": "github:macrome-js/generator#84dc41b4e85fa61668abe348175ea640ee59618f",
     "babel-type-scopes": "^1.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.0",
-    "@macrome/generator": "github:macrome-js/generator#a2f4f5e3690ca54e0d02e51c8a718fde4721441e",
     "@types/babel__core": "^7.1.18",
     "@types/node": "^17.0.16",
     "husky": "^7.0.1",
