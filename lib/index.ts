@@ -16,7 +16,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
   }
 
   async map(api: MapApi, change: Change) {
-    const basename = getBasename(change.path, 'ts');
+    const basename = getBasename(change.path, '.ts');
 
     const deps = {
       file: api.read(change.path),
