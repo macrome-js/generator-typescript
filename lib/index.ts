@@ -38,7 +38,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
         filename: change.path,
         // prettier-ignore
         plugins: [
-          './plugin-generate-ts-defs'
+          `${__dirname}/plugin-generate-ts-defs`
         ],
       });
       return result?.code || null;
