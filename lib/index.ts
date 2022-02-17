@@ -38,6 +38,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
         filename: change.path,
         // prettier-ignore
         plugins: [
+          '@babel/plugin-syntax-typescript',
           `${__dirname}/plugin-generate-ts-defs`
         ],
       });

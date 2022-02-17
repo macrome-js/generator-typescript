@@ -306,7 +306,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@macrome/generator@github:macrome-js/generator#84dc41b":
+"@macrome/generator@github:macrome-js/generator#84dc41b4e85fa61668abe348175ea640ee59618f":
   version "0.1.0"
   resolved "https://codeload.github.com/macrome-js/generator/tar.gz/84dc41b4e85fa61668abe348175ea640ee59618f"
 

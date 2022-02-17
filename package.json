@@ -34,9 +34,10 @@
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.17.2",
+    "@babel/plugin-syntax-typescript": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@iter-tools/queue": "^1.5.2",
-    "@macrome/generator": "github:macrome-js/generator#84dc41b",
+    "@macrome/generator": "github:macrome-js/generator#84dc41b4e85fa61668abe348175ea640ee59618f",
     "babel-type-scopes": "^1.1.0"
   },
   "devDependencies": {
