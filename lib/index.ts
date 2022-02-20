@@ -29,6 +29,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
         presets: [
           '@babel/preset-typescript'
         ],
+        shouldPrintComment: (val) => !/^\s*@ts/.test(val),
       });
       return result?.code || null;
     });
