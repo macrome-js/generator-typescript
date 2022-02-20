@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { Foo } from 'foo';
 export declare let foo: string, bard: Arella;
 export declare const aloof: string, alloc: number;
 export declare const poof: string;
@@ -35,3 +36,4 @@ export type ImmutableTree<K, V> = {
   readonly length: number;
 };
 export declare const createTree: <K, V>(comparator: (a: K, b: K) => number) => ImmutableTree<K, V>;
+export type { Foo };

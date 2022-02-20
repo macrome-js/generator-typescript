@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import { Foo, Bar } from 'foo';
+
 export let foo: string = 'oof',
   bard: Arella;
 
@@ -83,3 +85,5 @@ export type ImmutableTree<K, V> = {
 };
 
 export declare const createTree: <K, V>(comparator: (a: K, b: K) => number) => ImmutableTree<K, V>;
+
+export { Foo };

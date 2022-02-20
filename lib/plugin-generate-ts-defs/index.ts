@@ -105,6 +105,24 @@ const leftmost = (l: t.TSEntityName): t.Identifier => {
   return left;
 };
 
+const getExportedNames = (node: t.Node): Array<string> => {
+  let names: Array<string> = [];
+  if (t.isExportNamedDeclaration(node)) {
+    for (const spec of node.specifiers) {
+      if (t.isExportSpecifier(spec)) {
+        const { local } = spec;
+        names.push(local.name);
+      }
+    }
+  }
+  if (t.isExportNamedDeclaration(node) || t.isExportDefaultDeclaration(node)) {
+    if (node.declaration) {
+      names.push(...Object.keys(getOuterBindingIdentifiers(node.declaration)));
+    }
+  }
+  return names;
+};
+
 export default function generateTSDefs() {
   const visitor: Visitor<State> = {
     Program(path) {
@@ -121,9 +139,8 @@ export default function generateTSDefs() {
       const moduleScope = path.scope;
       const moduleTypeBindings: { [name: string]: { kind: string; path: any } } =
         tScope.getOwnTypeBindings(path);
-      const exportedNames = body
-        .filter((node) => t.isExportNamedDeclaration(node))
-        .flatMap((node) => Object.keys(getOuterBindingIdentifiers(node)));
+
+      const exportedNames = body.flatMap((node) => getExportedNames(node));
       const queue = new Queue(exportedNames);
       const usedSet = new Set();
 
@@ -166,8 +183,6 @@ export default function generateTSDefs() {
           //   stmt.exportKind = 'type';
         }
       }
-
-      // TODO Eliminate unused imports
 
       for (let i = body.length - 1; i >= 0; i--) {
         const stmt = body[i];
