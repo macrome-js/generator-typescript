@@ -2,6 +2,8 @@
 
 import { Foo, Bar } from 'foo';
 
+import { ContinuationResult, MatchState } from './types';
+
 export let foo: string = 'oof',
   bard: Arella;
 
@@ -86,4 +88,25 @@ export type ImmutableTree<K, V> = {
 
 export declare const createTree: <K, V>(comparator: (a: K, b: K) => number) => ImmutableTree<K, V>;
 
-export { Foo };
+type Moo = Foo;
+
+export { Moo };
+
+type ExpressionState = {
+  type: 'expr';
+  expr: Expression;
+};
+type SuccessState = {
+  type: 'success';
+  expr: Expression | null;
+  captures: Array<Array<string | null>>;
+};
+type ContinuationState = ContinuationResult;
+type State = ExpressionState | ContinuationState | SuccessState;
+export declare class Sequence {
+  state: State;
+  matchState: MatchState;
+  parentExpr: Expression;
+  better: Sequence | null;
+  worse: Sequence | null;
+}

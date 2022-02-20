@@ -145,6 +145,8 @@ export default function generateTSDefs() {
       const usedSet = new Set();
 
       for (const name of queue) {
+        if (usedSet.has(name)) continue;
+
         const boundPath = moduleScope.getOwnBinding(name)?.path || moduleTypeBindings[name]?.path;
 
         if (!boundPath) continue;
@@ -156,7 +158,11 @@ export default function generateTSDefs() {
         boundPath.parentPath?.traverse({
           TSTypeReference(path) {
             const { name } = leftmost(path.node.typeName);
-            if (boundPath.scope.getBinding(name)?.scope === moduleScope && !usedSet.has(name)) {
+
+            if (
+              tScope.getTypeBinding(path, name)?.path.scope === moduleScope ||
+              path.scope.getBinding(name)?.scope === moduleScope
+            ) {
               queue.push(name);
             }
           },
@@ -164,7 +170,10 @@ export default function generateTSDefs() {
             const { exprName } = path.node;
             if (t.isTSEntityName(exprName)) {
               const { name } = leftmost(exprName);
-              if (boundPath.scope.getBinding(name)?.scope === moduleScope && !usedSet.has(name)) {
+              if (
+                tScope.getTypeBinding(path, name)?.path.scope === moduleScope ||
+                path.scope.getBinding(name)?.scope === moduleScope
+              ) {
                 queue.push(name);
               }
             }

@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { Foo } from 'foo';
+import { ContinuationResult, MatchState } from './types';
 export declare let foo: string, bard: Arella;
 export declare const aloof: string, alloc: number;
 export declare const poof: string;
@@ -36,4 +37,23 @@ export type ImmutableTree<K, V> = {
   readonly length: number;
 };
 export declare const createTree: <K, V>(comparator: (a: K, b: K) => number) => ImmutableTree<K, V>;
-export type { Foo };
+type Moo = Foo;
+export type { Moo };
+type ExpressionState = {
+  type: 'expr';
+  expr: Expression;
+};
+type SuccessState = {
+  type: 'success';
+  expr: Expression | null;
+  captures: Array<Array<string | null>>;
+};
+type ContinuationState = ContinuationResult;
+type State = ExpressionState | ContinuationState | SuccessState;
+export declare class Sequence {
+  state: State;
+  matchState: MatchState;
+  parentExpr: Expression;
+  better: Sequence | null;
+  worse: Sequence | null;
+}
