@@ -5,7 +5,6 @@ import Queue from '@iter-tools/queue';
 // @ts-ignore
 import * as tScope from 'babel-type-scopes';
 import getOuterBindingIdentifiers from './get-binding-identifiers';
-import exp from 'constants';
 
 type State = {};
 
@@ -24,8 +23,9 @@ function stripRuntime(node: t.Node): t.Node {
     const { id, params, typeParameters, returnType } = declaration;
 
     // These node types are for Flow not Typescript
-    invariant(!t.isTypeParameterDeclaration(typeParameters), 'Unexpected TypeParameterDeclaration');
-    invariant(!t.isTypeAnnotation(returnType), 'Unexpected TypeAnnotation');
+    // prettier-ignore
+    if (typeParameters?.type === 'TypeParameterDeclaration') throw new Error('Unexpected TypeParameterDeclaration');
+    if (returnType?.type === 'TypeAnnotation') throw new Error('Unexpected TypeAnnotation');
 
     declaration = t.tsDeclareFunction(id, typeParameters, params, returnType);
     declaration.declare = true;
@@ -138,12 +138,18 @@ export default function generateTSDefs() {
         // Ensure that any unexported names that are referenced are still counted as used
         boundPath.parentPath?.traverse({
           TSTypeReference(path) {
-            queue.push(leftmost(path.node.typeName).name);
+            const { name } = leftmost(path.node.typeName);
+            if (boundPath.scope.getBinding(name)?.scope === moduleScope && !usedSet.has(name)) {
+              queue.push(name);
+            }
           },
           TSTypeQuery(path) {
             const { exprName } = path.node;
             if (t.isTSEntityName(exprName)) {
-              queue.push(leftmost(exprName).name);
+              const { name } = leftmost(exprName);
+              if (boundPath.scope.getBinding(name)?.scope === moduleScope && !usedSet.has(name)) {
+                queue.push(name);
+              }
             }
           },
           // @ts-ignore
