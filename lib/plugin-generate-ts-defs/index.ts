@@ -40,6 +40,7 @@ function stripRuntime(node: t.Node): t.Node {
 
       if (t.isClassProperty(member)) {
         member.value = undefined;
+        member.definite = false;
 
         if (!member.typeAnnotation) {
           body.body.splice(i, 1);

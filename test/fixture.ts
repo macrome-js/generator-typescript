@@ -104,7 +104,7 @@ type SuccessState = {
 type ContinuationState = ContinuationResult;
 type State = ExpressionState | ContinuationState | SuccessState;
 export declare class Sequence {
-  state: State;
+  readonly state!: State;
   matchState: MatchState;
   parentExpr: Expression;
   better: Sequence | null;
