@@ -9,11 +9,13 @@ specifiers:
   '@macrome/generator': github:macrome-js/generator#84dc41b4e85fa61668abe348175ea640ee59618f
   '@types/babel__core': ^7.1.18
   '@types/node': ^17.0.16
+  babel-plugin-recast: ^0.2.0
   babel-type-scopes: ^1.1.0
   errawr: github:conartist6/errawr
   husky: ^7.0.1
   lint-staged: ^11.0.0
   npm-run-all: ^4.1.5
+  recast: ^0.20.5
   typescript: ^4.3.5
 
 dependencies:
@@ -22,8 +24,10 @@ dependencies:
   '@babel/preset-typescript': 7.16.7_@babel+core@7.17.5
   '@iter-tools/queue': 1.5.2
   '@macrome/generator': github.com/macrome-js/generator/84dc41b4e85fa61668abe348175ea640ee59618f
+  babel-plugin-recast: 0.2.0_recast@0.20.5
   babel-type-scopes: 1.1.0
   errawr: github.com/conartist6/errawr/1a075e44cb9bfaf99894d0aa7561bc39d4138034
+  recast: 0.20.5
 
 devDependencies:
   '@babel/cli': 7.17.3_@babel+core@7.17.5
@@ -456,6 +460,13 @@ packages:
     dev: true
     optional: true
 
+  /ast-types/0.14.2:
+    resolution: {integrity: sha512-O0yuUDnZeQDL+ncNGlJ78BiO4jnYI3bvMsD5prT0/nsgijG/LpNBIr63gTjVTNsiGkgQhiyCShTgxt8oXOrklA==}
+    engines: {node: '>=4'}
+    dependencies:
+      tslib: 2.3.1
+    dev: false
+
   /astral-regex/2.0.0:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
     engines: {node: '>=8'}
@@ -463,6 +474,15 @@ packages:
 
   /babel-flow-types/1.2.3:
     resolution: {integrity: sha1-6clKwQY6iFf4sqZ8LhfrbMzVGeM=}
+    dev: false
+
+  /babel-plugin-recast/0.2.0_recast@0.20.5:
+    resolution: {integrity: sha512-wED/omVsUEFWv98p2Um/9tsSxfaEPGtgPZbNFTFV4hmBpbahcWcTLG7DZRJyuYqykV/jmDbErpzDr/dl31xJTA==}
+    peerDependencies:
+      recast: 0.x
+    dependencies:
+      '@babel/helper-plugin-utils': 7.16.7
+      recast: 0.20.5
     dev: false
 
   /babel-type-scopes/1.1.0:
@@ -761,6 +781,12 @@ packages:
   /escape-string-regexp/1.0.5:
     resolution: {integrity: sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=}
     engines: {node: '>=0.8.0'}
+
+  /esprima/4.0.1:
+    resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
+    engines: {node: '>=4'}
+    hasBin: true
+    dev: false
 
   /execa/5.1.1:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}
@@ -1382,6 +1408,16 @@ packages:
     dev: true
     optional: true
 
+  /recast/0.20.5:
+    resolution: {integrity: sha512-E5qICoPoNL4yU0H0NoBDntNB0Q5oMSNh9usFctYniLBluTthi3RsQVBXIJNbApOlvSwW/RGxIuokPcAc59J5fQ==}
+    engines: {node: '>= 4'}
+    dependencies:
+      ast-types: 0.14.2
+      esprima: 4.0.1
+      source-map: 0.6.1
+      tslib: 2.3.1
+    dev: false
+
   /resolve-from/4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
     engines: {node: '>=4'}
@@ -1496,6 +1532,11 @@ packages:
   /source-map/0.5.7:
     resolution: {integrity: sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=}
     engines: {node: '>=0.10.0'}
+
+  /source-map/0.6.1:
+    resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /spdx-correct/3.1.1:
     resolution: {integrity: sha512-cOYcUWwhCuHCXi49RhFRCyJEK3iPj1Ziz9DpViV3tbZOwXD49QzIN3MpOLJNxh2qwq2lJJZaKMVw9qNi4jTC0w==}
@@ -1615,7 +1656,6 @@ packages:
 
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
-    dev: true
 
   /type-fest/0.21.3:
     resolution: {integrity: sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==}

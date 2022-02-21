@@ -29,6 +29,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
         presets: [
           '@babel/preset-typescript'
         ],
+        plugins: ['babel-plugin-recast'],
         shouldPrintComment: (val) => !/^\s*@ts/.test(val),
       });
       return result?.code || null;
@@ -39,6 +40,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
         filename: change.path,
         // prettier-ignore
         plugins: [
+          'babel-plugin-recast',
           '@babel/plugin-syntax-typescript',
           `${__dirname}/plugin-generate-ts-defs`
         ],
