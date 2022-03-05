@@ -8,8 +8,7 @@ import getOuterBindingIdentifiers from './get-binding-identifiers';
 
 type State = {};
 
-function stripRuntime(node: t.Declaration): t.Declaration;
-function stripRuntime(node: t.Node): t.Node;
+function stripRuntime<T>(node: T): T;
 function stripRuntime(node: t.Node): t.Node {
   let declaration = node;
 
@@ -46,7 +45,11 @@ function stripRuntime(node: t.Node): t.Node {
           body.body.splice(i, 1);
         }
 
-        if (t.isMemberExpression(member.key)) {
+        if (member.accessibility === 'private') {
+          member.typeAnnotation = null;
+        }
+
+        if (t.isIdentifier(member.key)) {
           // [Symbol.iterator]()
         }
       } else if (t.isClassMethod(member)) {
@@ -99,13 +102,6 @@ function stripRuntime(node: t.Node): t.Node {
   return declaration;
 }
 
-const leftmost = (l: t.TSEntityName): t.Identifier => {
-  let left: t.TSQualifiedName | t.Identifier = l;
-  while (left && t.isTSQualifiedName(left)) left = left.left;
-  // t.assertIdentifier(left);
-  return left;
-};
-
 const getExportedNames = (node: t.Node): Array<string> => {
   let names: Array<string> = [];
   if (t.isExportNamedDeclaration(node)) {
@@ -128,6 +124,28 @@ export default function generateTSDefs() {
   const visitor: Visitor<State> = {
     Program(path) {
       const { body } = path.node;
+
+      // First strip out runtime code
+      // This will make it easier to analyze any remaining identifiers
+
+      for (let i = body.length - 1; i >= 0; i--) {
+        let stmt = body[i];
+
+        if (t.isExportNamedDeclaration(stmt)) {
+          if (stmt.declaration) {
+            stmt.declaration = stripRuntime(stmt.declaration);
+          }
+
+          stmt.exportKind = 'type';
+        } else if (t.isExportAllDeclaration(stmt)) {
+        } else {
+          body[i] = stmt = stripRuntime(stmt);
+          const shouldRemove = !Object.keys(getOuterBindingIdentifiers(stmt)).length;
+          if (shouldRemove) {
+            body.splice(i, 1);
+          }
+        }
+      }
 
       // Find exported symbols
       // Build set of used symbols:
@@ -157,26 +175,22 @@ export default function generateTSDefs() {
 
         // Ensure that any unexported names that are referenced are still counted as used
         boundPath.parentPath?.traverse({
-          TSTypeReference(path) {
-            const { name } = leftmost(path.node.typeName);
-
+          Identifier(path) {
+            const { node } = path;
+            const parentNode = path.parentPath.node;
             if (
-              tScope.getTypeBinding(path, name)?.path.scope === moduleScope ||
+              (t.isTSQualifiedName(parentNode) && parentNode.left !== node) ||
+              t.isImportSpecifier(parentNode) ||
+              t.isImportDefaultSpecifier(parentNode)
+            ) {
+              return;
+            }
+            const { name } = node;
+            if (
+              tScope.getTypeBinding(path, name)?.path?.scope === moduleScope ||
               path.scope.getBinding(name)?.scope === moduleScope
             ) {
               queue.push(name);
-            }
-          },
-          TSTypeQuery(path) {
-            const { exprName } = path.node;
-            if (t.isTSEntityName(exprName)) {
-              const { name } = leftmost(exprName);
-              if (
-                tScope.getTypeBinding(path, name)?.path.scope === moduleScope ||
-                path.scope.getBinding(name)?.scope === moduleScope
-              ) {
-                queue.push(name);
-              }
             }
           },
           // @ts-ignore
@@ -191,24 +205,6 @@ export default function generateTSDefs() {
           binding.path.remove();
         } else {
           //   stmt.exportKind = 'type';
-        }
-      }
-
-      for (let i = body.length - 1; i >= 0; i--) {
-        const stmt = body[i];
-
-        if (t.isExportNamedDeclaration(stmt)) {
-          if (stmt.declaration) {
-            stmt.declaration = stripRuntime(stmt.declaration);
-          }
-
-          stmt.exportKind = 'type';
-        } else if (t.isExportAllDeclaration(stmt)) {
-        } else {
-          const shouldRemove = !Object.keys(getOuterBindingIdentifiers(stmt)).length;
-          if (shouldRemove) {
-            body.splice(i, 1);
-          }
         }
       }
     },

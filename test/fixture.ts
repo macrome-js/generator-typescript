@@ -112,3 +112,9 @@ export declare class Sequence {
 }
 
 export declare class MyIterable<T> extends Iterable<T> {}
+
+const _: unique symbol = Symbol.for('_');
+
+export class Api {
+  private [_]: null;
+}

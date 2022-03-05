@@ -30,6 +30,7 @@ export declare class Drink {
   proof: number;
   constructor(proof: number);
 }
+declare const PreparedDrink: typeof Drink & Constructor<IPreparedMixin>;
 export declare class Margherita extends PreparedDrink {}
 export type ImmutableTree<K, V> = {
   get(key: K): V;
@@ -58,3 +59,9 @@ export declare class Sequence {
   worse: Sequence | null;
 }
 export declare class MyIterable<T> extends Iterable<T> {}
+
+declare const _: unique symbol;
+
+export declare class Api {
+  private [_];
+}
