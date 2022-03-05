@@ -30,10 +30,10 @@ function stripRuntime(node: t.Node): t.Node {
     declaration = t.tsDeclareFunction(id, typeParameters, params, returnType);
     declaration.declare = true;
   } else if (t.isClassDeclaration(declaration)) {
-    const { id, superClass, body } = declaration;
+    const { body } = declaration;
     // At present it is safe to assume that TS decorators never mutate method types
     // https://github.com/microsoft/TypeScript/issues/4881
-    const decorators = undefined;
+
     let hasPrivates = false;
     for (let i = body.body.length - 1; i >= 0; i--) {
       let member = body.body[i];
@@ -93,7 +93,7 @@ function stripRuntime(node: t.Node): t.Node {
         t.classPrivateProperty(t.privateName(t.identifier('private')), undefined, undefined, false),
       );
     }
-    declaration = t.classDeclaration(id, superClass, body, decorators);
+    declaration.decorators = undefined;
     declaration.declare = true;
   }
   return declaration;

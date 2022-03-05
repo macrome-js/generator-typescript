@@ -110,3 +110,5 @@ export declare class Sequence {
   better: Sequence | null;
   worse: Sequence | null;
 }
+
+export declare class MyIterable<T> extends Iterable<T> {}
