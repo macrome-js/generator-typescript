@@ -2,6 +2,8 @@
 
 import { Foo, Bar } from 'foo';
 
+import 'bork';
+
 import { ContinuationResult, MatchState } from './types';
 
 export let foo: string = 'oof',

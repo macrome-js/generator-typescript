@@ -207,6 +207,16 @@ export default function generateTSDefs() {
           //   stmt.exportKind = 'type';
         }
       }
+
+      for (let i = body.length - 1; i >= 0; i--) {
+        let stmt = body[i];
+
+        if (t.isImportDeclaration(stmt)) {
+          if (!stmt.specifiers.length) {
+            body.splice(i, 1);
+          }
+        }
+      }
     },
   };
 
