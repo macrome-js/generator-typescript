@@ -120,3 +120,5 @@ const _: unique symbol = Symbol.for('_');
 export class Api {
   private [_]: null;
 }
+
+export const plusFour = (arg: number): number => number + 4;

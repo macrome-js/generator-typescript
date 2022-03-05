@@ -15,6 +15,37 @@ function stripRuntime(node: t.Node): t.Node {
   if (t.isVariableDeclaration(declaration)) {
     const declarators = declaration.declarations;
     for (const declarator of declarators) {
+      if (
+        declarator.init &&
+        t.isArrowFunctionExpression(declarator.init) &&
+        t.isIdentifier(declarator.id) &&
+        !declarator.id.typeAnnotation
+      ) {
+        // const fn = (arg: type): type => result;
+        // In this case we wish to infer
+        const arrowFn = declarator.init;
+        const { typeParameters, params, returnType } = arrowFn;
+
+        if (typeParameters) {
+          invariant(
+            typeParameters?.type === 'TSTypeParameterDeclaration',
+            'Invalid type parameters',
+          );
+        }
+        invariant(returnType?.type === 'TSTypeAnnotation', 'Invalid return type annotation');
+
+        const params_ = params.map((param) => {
+          if (t.isPattern(node)) {
+            throw new Error('argument Patterns are unsupported');
+          } else {
+            return param as t.Identifier | t.RestElement;
+          }
+        });
+
+        declarator.id.typeAnnotation = t.tsTypeAnnotation(
+          t.tsFunctionType(typeParameters, params_, returnType),
+        );
+      }
       declarator.init = undefined;
       declaration.declare = true;
     }

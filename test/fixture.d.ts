@@ -65,3 +65,4 @@ declare const _: unique symbol;
 export declare class Api {
   private [_];
 }
+export declare const plusFour: (arg: number) => number;
