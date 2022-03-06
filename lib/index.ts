@@ -5,48 +5,58 @@ import { basename as getBasename } from 'path';
 export type Options = {
   include?: MMatchExpression;
   exclude?: MMatchExpression;
+  impls?: boolean;
+  defs?: boolean;
 };
 
 class GeneratorTypescript extends BaseGenerator<Options, void> {
   constructor(options: Options) {
-    super(options);
+    super({
+      impls: true,
+      defs: true,
+      ...options,
+    });
 
     this.include = options.include || ['**/*.ts'];
     this.exclude = options.exclude || ['**/*.d.ts'];
   }
 
   async map(api: MapApi, change: Change) {
+    const { options } = this;
     const basename = getBasename(change.path, '.ts');
 
     const deps = {
       file: api.read(change.path),
     };
 
-    await api.generate(`./${basename}.js`, deps, async ({ file }) => {
-      const result = await transform(file, {
-        filename: change.path,
-        // prettier-ignore
-        presets: [
-          '@babel/preset-typescript'
-        ],
-        plugins: ['babel-plugin-recast'],
-        shouldPrintComment: (val) => !/^\s*@ts/.test(val),
+    if (options.impls) {
+      await api.generate(`./${basename}.js`, deps, async ({ file }) => {
+        const result = await transform(file, {
+          filename: change.path,
+          // prettier-ignore
+          presets: [
+            '@babel/preset-typescript'
+          ],
+          plugins: ['babel-plugin-recast'],
+          shouldPrintComment: (val) => !/^\s*@ts/.test(val),
+        });
+        return result?.code || null;
       });
-      return result?.code || null;
-    });
+    }
 
-    await api.generate(`./${basename}.d.ts`, deps, async ({ file }) => {
-      const result = await transform(file, {
-        filename: change.path,
-        // prettier-ignore
-        plugins: [
-          'babel-plugin-recast',
-          '@babel/plugin-syntax-typescript',
-          `${__dirname}/plugin-generate-ts-defs`
-        ],
+    if (options.defs) {
+      await api.generate(`./${basename}.d.ts`, deps, async ({ file }) => {
+        const result = await transform(file, {
+          filename: change.path,
+          plugins: [
+            'babel-plugin-recast',
+            '@babel/plugin-syntax-typescript',
+            `${__dirname}/plugin-generate-ts-defs`,
+          ],
+        });
+        return result?.code || null;
       });
-      return result?.code || null;
-    });
+    }
   }
 }
 
