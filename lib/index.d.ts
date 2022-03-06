@@ -5,3 +5,4 @@ export declare type Options = {
     impls?: boolean;
     defs?: boolean;
 };
+export declare const asArray: <T>(value: T | T[] | null | undefined) => T[];
