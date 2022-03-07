@@ -32,7 +32,9 @@ function stripRuntime(node: t.Node): t.Node {
             'Invalid type parameters',
           );
         }
-        invariant(returnType?.type === 'TSTypeAnnotation', 'Invalid return type annotation');
+
+        const returnType_ = returnType || t.tsTypeAnnotation(t.tsUnknownKeyword());
+        invariant(returnType_.type === 'TSTypeAnnotation', 'Invalid return type annotation');
 
         const params_ = params.map((param) => {
           if (t.isPattern(node)) {
@@ -43,7 +45,7 @@ function stripRuntime(node: t.Node): t.Node {
         });
 
         declarator.id.typeAnnotation = t.tsTypeAnnotation(
-          t.tsFunctionType(typeParameters, params_, returnType),
+          t.tsFunctionType(typeParameters, params_, returnType_),
         );
       }
       declarator.init = undefined;
