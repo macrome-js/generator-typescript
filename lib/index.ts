@@ -1,6 +1,6 @@
 import { BaseGenerator, Change, MapApi, MMatchExpression } from '@macrome/generator';
 import { transformAsync as transform } from '@babel/core';
-import { basename as getBasename } from 'path';
+import { basename as getBasename, resolve } from 'path';
 
 export type Options = {
   include?: MMatchExpression;
@@ -35,6 +35,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
     if (options.impls) {
       await api.generate(`./${basename}.js`, deps, async ({ file }) => {
         const result = await transform(file, {
+          cwd: resolve(__dirname, '..'),
           filename: change.path,
           // prettier-ignore
           presets: [
@@ -54,6 +55,7 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
     if (options.defs) {
       await api.generate(`./${basename}.d.ts`, deps, async ({ file }) => {
         const result = await transform(file, {
+          cwd: resolve(__dirname, '..'),
           filename: change.path,
           plugins: [
             'babel-plugin-recast',
