@@ -4,6 +4,7 @@ specifiers:
   '@babel/cli': ^7.15.0
   '@babel/core': ^7.17.2
   '@babel/plugin-syntax-typescript': ^7.16.7
+  '@babel/plugin-transform-modules-commonjs': ^7.16.8
   '@babel/preset-typescript': ^7.16.7
   '@iter-tools/queue': ^1.5.2
   '@macrome/generator': github:macrome-js/generator#84dc41b4e85fa61668abe348175ea640ee59618f
@@ -11,23 +12,24 @@ specifiers:
   '@types/node': ^17.0.16
   babel-plugin-recast: ^0.2.0
   babel-type-scopes: ^1.1.0
-  errawr: github:conartist6/errawr
+  errawr: github:conartist6/errawr#1a075e44cb9bfaf99894d0aa7561bc39d4138034
   husky: ^7.0.1
   lint-staged: ^11.0.0
   npm-run-all: ^4.1.5
-  recast: ^0.20.5
+  recast: github:conartist6/recast#15db2921552e890fb404272005466044285df678
   typescript: ^4.3.5
 
 dependencies:
   '@babel/core': 7.17.5
   '@babel/plugin-syntax-typescript': 7.16.7_@babel+core@7.17.5
+  '@babel/plugin-transform-modules-commonjs': 7.16.8_@babel+core@7.17.5
   '@babel/preset-typescript': 7.16.7_@babel+core@7.17.5
   '@iter-tools/queue': 1.5.2
   '@macrome/generator': github.com/macrome-js/generator/84dc41b4e85fa61668abe348175ea640ee59618f
-  babel-plugin-recast: 0.2.0_recast@0.20.5
+  babel-plugin-recast: 0.2.0_recast@0.21.0
   babel-type-scopes: 1.1.0
   errawr: github.com/conartist6/errawr/1a075e44cb9bfaf99894d0aa7561bc39d4138034
-  recast: 0.20.5
+  recast: github.com/conartist6/recast/15db2921552e890fb404272005466044285df678
 
 devDependencies:
   '@babel/cli': 7.17.3_@babel+core@7.17.5
@@ -291,6 +293,21 @@ packages:
       '@babel/helper-plugin-utils': 7.16.7
     dev: false
 
+  /@babel/plugin-transform-modules-commonjs/7.16.8_@babel+core@7.17.5:
+    resolution: {integrity: sha512-oflKPvsLT2+uKQopesJt3ApiaIS2HW+hzHFcwRNtyDGieAeC/dIHZX8buJQ2J2X1rxGPy4eRcUijm3qcSPjYcA==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.17.5
+      '@babel/helper-module-transforms': 7.16.7
+      '@babel/helper-plugin-utils': 7.16.7
+      '@babel/helper-simple-access': 7.16.7
+      babel-plugin-dynamic-import-node: 2.3.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@babel/plugin-transform-typescript/7.16.8_@babel+core@7.17.5:
     resolution: {integrity: sha512-bHdQ9k7YpBDO2d0NVfkj51DpQcvwIzIusJ7mEUaMlbZq3Kt/U47j24inXZHQ5MDiYpCs+oZiwnXyKedE8+q7AQ==}
     engines: {node: '>=6.9.0'}
@@ -460,8 +477,8 @@ packages:
     dev: true
     optional: true
 
-  /ast-types/0.14.2:
-    resolution: {integrity: sha512-O0yuUDnZeQDL+ncNGlJ78BiO4jnYI3bvMsD5prT0/nsgijG/LpNBIr63gTjVTNsiGkgQhiyCShTgxt8oXOrklA==}
+  /ast-types/0.15.2:
+    resolution: {integrity: sha512-c27loCv9QkZinsa5ProX751khO9DJl/AcB5c2KNtA6NRvHKS0PgLfcftz72KVq504vB0Gku5s2kUZzDBvQWvHg==}
     engines: {node: '>=4'}
     dependencies:
       tslib: 2.3.1
@@ -476,13 +493,19 @@ packages:
     resolution: {integrity: sha1-6clKwQY6iFf4sqZ8LhfrbMzVGeM=}
     dev: false
 
-  /babel-plugin-recast/0.2.0_recast@0.20.5:
+  /babel-plugin-dynamic-import-node/2.3.3:
+    resolution: {integrity: sha512-jZVI+s9Zg3IqA/kdi0i6UDCybUI3aSBLnglhYbSSjKlV7yF1F/5LWv8MakQmvYpnbJDS6fcBL2KzHSxNCMtWSQ==}
+    dependencies:
+      object.assign: 4.1.2
+    dev: false
+
+  /babel-plugin-recast/0.2.0_recast@0.21.0:
     resolution: {integrity: sha512-wED/omVsUEFWv98p2Um/9tsSxfaEPGtgPZbNFTFV4hmBpbahcWcTLG7DZRJyuYqykV/jmDbErpzDr/dl31xJTA==}
     peerDependencies:
       recast: 0.x
     dependencies:
       '@babel/helper-plugin-utils': 7.16.7
-      recast: 0.20.5
+      recast: github.com/conartist6/recast/15db2921552e890fb404272005466044285df678
     dev: false
 
   /babel-type-scopes/1.1.0:
@@ -1408,16 +1431,6 @@ packages:
     dev: true
     optional: true
 
-  /recast/0.20.5:
-    resolution: {integrity: sha512-E5qICoPoNL4yU0H0NoBDntNB0Q5oMSNh9usFctYniLBluTthi3RsQVBXIJNbApOlvSwW/RGxIuokPcAc59J5fQ==}
-    engines: {node: '>= 4'}
-    dependencies:
-      ast-types: 0.14.2
-      esprima: 4.0.1
-      source-map: 0.6.1
-      tslib: 2.3.1
-    dev: false
-
   /resolve-from/4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
     engines: {node: '>=4'}
@@ -1743,6 +1756,18 @@ packages:
     dependencies:
       error-cause: 1.0.3
       object-inspect: 1.12.0
+    dev: false
+
+  github.com/conartist6/recast/15db2921552e890fb404272005466044285df678:
+    resolution: {tarball: https://codeload.github.com/conartist6/recast/tar.gz/15db2921552e890fb404272005466044285df678}
+    name: recast
+    version: 0.21.0
+    engines: {node: '>= 4'}
+    dependencies:
+      ast-types: 0.15.2
+      esprima: 4.0.1
+      source-map: 0.6.1
+      tslib: 2.3.1
     dev: false
 
   github.com/macrome-js/generator/84dc41b4e85fa61668abe348175ea640ee59618f:

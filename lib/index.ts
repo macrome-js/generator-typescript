@@ -38,9 +38,13 @@ class GeneratorTypescript extends BaseGenerator<Options, void> {
           filename: change.path,
           // prettier-ignore
           presets: [
-            '@babel/preset-typescript'
+            '@babel/preset-typescript',
           ],
-          plugins: ['babel-plugin-recast'],
+          // prettier-ignore
+          plugins: [
+            'babel-plugin-recast',
+            '@babel/plugin-transform-modules-commonjs',
+          ],
           shouldPrintComment: (val) => !/^\s*@ts/.test(val),
         });
         return result?.code || null;

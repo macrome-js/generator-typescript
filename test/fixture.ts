@@ -121,4 +121,8 @@ export class Api {
   private [_]: null;
 }
 
+export type Iterable<T> = {
+  [Symbol.iterator]: () => { next: { done: boolean; value: T } };
+};
+
 export const plusFour = (arg: number): number => number + 4;

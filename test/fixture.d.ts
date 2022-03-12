@@ -65,4 +65,12 @@ declare const _: unique symbol;
 export declare class Api {
   private [_];
 }
+export type Iterable<T> = {
+  [Symbol.iterator]: () => {
+    next: {
+      done: boolean;
+      value: T;
+    };
+  };
+};
 export declare const plusFour: (arg: number) => number;
