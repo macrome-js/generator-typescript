@@ -13,7 +13,6 @@ specifiers:
   babel-plugin-recast: ^0.2.0
   babel-type-scopes: ^1.1.0
   errawr: github:conartist6/errawr#1a075e44cb9bfaf99894d0aa7561bc39d4138034
-  husky: ^7.0.1
   lint-staged: ^11.0.0
   npm-run-all: ^4.1.5
   recast: github:conartist6/recast#15db2921552e890fb404272005466044285df678
@@ -35,7 +34,6 @@ devDependencies:
   '@babel/cli': 7.17.3_@babel+core@7.17.5
   '@types/babel__core': 7.1.18
   '@types/node': 17.0.18
-  husky: 7.0.4
   lint-staged: 11.2.6
   npm-run-all: 4.1.5
   typescript: 4.5.5
@@ -954,12 +952,6 @@ packages:
   /human-signals/2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
-    dev: true
-
-  /husky/7.0.4:
-    resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
-    engines: {node: '>=12'}
-    hasBin: true
     dev: true
 
   /import-fresh/3.3.0:
